@@ -1,14 +1,10 @@
-const express = require('express')
-const aiRoutes = require("./routes/ai.routes")
-const app = express()
-const cors = require('cors')
+const express = require('express');
+const aiRoutes = require("./routes/ai.routes");
+const cors = require('cors');
 
+const app = express();
 
-app.get("/",(req,res)=>{
-    res.send("Hello World")
-})
-app.use(express.json())
-
+// ✅ Apply CORS Middleware Before Routes
 const allowedOrigins = [
     "http://localhost:5173", // Local development
     "https://problem-solver-frontend.vercel.app" // Deployed frontend
@@ -25,6 +21,14 @@ app.use(cors({
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"]
 }));
-app.use("/ai",aiRoutes)
 
-module.exports = app
+app.use(express.json()); // ✅ Move express.json() here too
+
+// Routes
+app.use("/ai", aiRoutes);
+
+app.get("/", (req, res) => {
+    res.send("Hello World");
+});
+
+module.exports = app;
